@@ -7,12 +7,18 @@ export const About: React.FC = () => {
   const { t } = useLanguage();
 
   return (
-    <section className="py-32 px-4 bg-white/5 relative overflow-hidden">
+    <section id="about" className="py-32 px-4 bg-white/5 relative overflow-hidden">
       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-electric/30 to-transparent" />
       <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-electric/30 to-transparent" />
 
       <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-24 items-center">
-        <div className="space-y-12">
+        <motion.div 
+          initial={{ opacity: 0, x: -100, scale: 0.9, filter: 'blur(20px)' }}
+          whileInView={{ opacity: 1, x: 0, scale: 1, filter: 'blur(0px)' }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 1, type: "spring", bounce: 0.4 }}
+          className="space-y-12"
+        >
           <div className="space-y-4">
             <span className="text-[10px] uppercase tracking-[0.5em] text-electric font-bold">{t.about.subtitle}</span>
             <h2 className="text-5xl md:text-8xl font-display uppercase tracking-tighter leading-none">
@@ -32,13 +38,18 @@ export const About: React.FC = () => {
             <Stat label={t.about.stats.focus} value="AI & Full-Stack" icon={<BrainCircuit size={16} />} />
             <Stat label={t.about.stats.vision} value="AGI & Games" icon={<Rocket size={16} />} />
           </div>
-        </div>
+        </motion.div>
 
-        <div className="relative">
+        <motion.div 
+          initial={{ opacity: 0, x: 100, scale: 0.9, filter: 'blur(20px)' }}
+          whileInView={{ opacity: 1, x: 0, scale: 1, filter: 'blur(0px)' }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 1, delay: 0.2, type: "spring", bounce: 0.4 }}
+          className="relative"
+        >
           <motion.div
-            initial={{ rotate: -5 }}
-            whileInView={{ rotate: 5 }}
-            transition={{ duration: 5, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
+            animate={{ rotate: [-5, 5, -5] }}
+            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
             className="aspect-[3/4] glass rounded-3xl overflow-hidden relative z-10"
           >
             <img 
@@ -59,7 +70,7 @@ export const About: React.FC = () => {
             <p className="text-[10px] uppercase tracking-widest font-bold">{t.about.mission.label}</p>
             <p className="text-xs opacity-60 italic font-serif">{t.about.mission.text}</p>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -7,6 +7,7 @@ import { Music } from './components/Music';
 import { AIAssistant } from './components/AIAssistant';
 import { Footer } from './components/Footer';
 import { CustomCursor } from './components/CustomCursor';
+import { Navigation } from './components/Navigation';
 import { LanguageProvider, useLanguage } from './LanguageContext';
 import { motion, useScroll, useSpring } from 'motion/react';
 
@@ -24,6 +25,7 @@ function AppContent() {
     <main className="relative selection:bg-electric selection:text-white">
       <CustomCursor />
       <NeuralBackground />
+      <Navigation />
       <AIAssistant />
       
       {/* Language Toggle */}

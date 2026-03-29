@@ -43,15 +43,21 @@ export const Projects: React.FC = () => {
   ];
 
   return (
-    <section className="py-32 px-4 max-w-7xl mx-auto">
-      <div className="mb-24 flex flex-col md:flex-row justify-between items-end gap-8">
+    <section id="projects" className="py-32 px-4 max-w-7xl mx-auto">
+      <motion.div 
+        initial={{ opacity: 0, y: 100, scale: 0.9, filter: 'blur(20px)' }}
+        whileInView={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 1, type: "spring", bounce: 0.4 }}
+        className="mb-24 flex flex-col md:flex-row justify-between items-end gap-8"
+      >
         <h2 className="text-5xl md:text-8xl font-display uppercase tracking-tighter leading-none">
           {t.projects.title1} <br /> <span className="text-outline">{t.projects.title2}</span>
         </h2>
         <p className="max-w-xs text-xs uppercase tracking-[0.3em] opacity-40 leading-relaxed text-right">
           {t.projects.description}
         </p>
-      </div>
+      </motion.div>
 
       <div className="grid gap-32">
         {projects.map((project, index) => (

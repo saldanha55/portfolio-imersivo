@@ -1,56 +1,102 @@
-import React from 'react';
-import { motion } from 'motion/react';
-import { Play, ExternalLink, Headphones } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Play, ExternalLink, Headphones, Pause } from 'lucide-react';
 import { useLanguage } from '../LanguageContext';
 
 export const Music: React.FC = () => {
   const { t } = useLanguage();
+  const [isPlaying, setIsPlaying] = useState(false);
 
   return (
-    <section className="py-32 px-4 max-w-7xl mx-auto">
+    <section id="music" className="py-32 px-4 max-w-7xl mx-auto">
       <div className="grid md:grid-cols-2 gap-24 items-center">
-        <div className="order-2 md:order-1 relative">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.5, filter: 'blur(20px)', rotate: -10 }}
+          whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)', rotate: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 1, type: "spring", bounce: 0.5 }}
+          className="order-2 md:order-1 relative"
+        >
           <div className="aspect-square glass rounded-full flex items-center justify-center relative overflow-hidden group">
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
               className="absolute inset-0 border-[40px] border-white/5 rounded-full"
             />
-            <div className="w-3/4 h-3/4 rounded-full overflow-hidden relative z-10 grayscale group-hover:grayscale-0 transition-all duration-700">
+            <motion.div 
+              animate={isPlaying ? { rotate: 360 } : { rotate: 0 }}
+              transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+              className={`w-3/4 h-3/4 rounded-full overflow-hidden relative z-10 transition-all duration-700 ${isPlaying ? 'grayscale-0 scale-105 shadow-[0_0_50px_rgba(0,255,255,0.3)]' : 'grayscale group-hover:grayscale-0'}`}
+            >
               <img 
                 src="/1763493324336.png" 
                 alt="Lembrado" 
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"
               />
-            </div>
+              {/* Vinyl Center Hole */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-ink rounded-full border-2 border-white/10 shadow-inner" />
+            </motion.div>
             <motion.div
               whileHover={{ scale: 1.1 }}
-              className="absolute inset-0 flex items-center justify-center z-20 opacity-0 group-hover:opacity-100 transition-opacity"
+              className={`absolute inset-0 flex items-center justify-center z-20 transition-opacity ${isPlaying ? 'opacity-0 hover:opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
             >
-              <a 
-                href="https://open.spotify.com/intl-pt/artist/4jQriM28sa0FuCduWRpvm1" 
-                target="_blank" 
-                rel="noopener noreferrer"
+              <button 
+                onClick={() => setIsPlaying(!isPlaying)}
                 className="w-20 h-20 bg-electric rounded-full flex items-center justify-center text-white shadow-2xl shadow-electric/50"
               >
-                <Play fill="white" size={32} />
-              </a>
+                {isPlaying ? <Pause fill="white" size={32} /> : <Play fill="white" size={32} />}
+              </button>
             </motion.div>
           </div>
           
-          <div className="absolute -top-4 -left-4 glass p-4 rounded-2xl flex items-center gap-4">
-            <div className="w-10 h-10 bg-electric/20 rounded-lg flex items-center justify-center">
-              <Headphones size={20} className="text-electric" />
-            </div>
-            <div>
-              <p className="text-[10px] uppercase tracking-widest opacity-40">{t.music.streaming}</p>
-              <p className="text-xs font-bold">Lembrado</p>
-            </div>
-          </div>
-        </div>
+          <AnimatePresence mode="wait">
+            {!isPlaying ? (
+              <motion.div 
+                key="status"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9, filter: 'blur(10px)' }}
+                className="absolute -top-4 -left-4 glass p-4 rounded-2xl flex items-center gap-4 z-30"
+              >
+                <div className="w-10 h-10 bg-electric/20 rounded-lg flex items-center justify-center">
+                  <Headphones size={20} className="text-electric" />
+                </div>
+                <div>
+                  <p className="text-[10px] uppercase tracking-widest opacity-40">{t.music.streaming}</p>
+                  <p className="text-xs font-bold">Lembrado</p>
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div 
+                key="player"
+                initial={{ opacity: 0, scale: 0.8, filter: 'blur(10px)' }}
+                animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+                exit={{ opacity: 0, scale: 0.8, filter: 'blur(10px)' }}
+                className="absolute -top-10 -left-10 md:-left-20 z-30 w-[300px] shadow-2xl"
+              >
+                <iframe 
+                  style={{ borderRadius: '12px' }} 
+                  src="https://open.spotify.com/embed/artist/4jQriM28sa0FuCduWRpvm1?utm_source=generator&theme=0" 
+                  width="100%" 
+                  height="152" 
+                  frameBorder="0" 
+                  allowFullScreen={false} 
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+                  loading="lazy"
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
 
-        <div className="order-1 md:order-2 space-y-12">
+        <motion.div 
+          initial={{ opacity: 0, x: 100, scale: 0.9, filter: 'blur(20px)' }}
+          whileInView={{ opacity: 1, x: 0, scale: 1, filter: 'blur(0px)' }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 1, delay: 0.2, type: "spring", bounce: 0.4 }}
+          className="order-1 md:order-2 space-y-12"
+        >
           <div className="space-y-4">
             <span className="text-[10px] uppercase tracking-[0.5em] text-electric font-bold">{t.music.subtitle}</span>
             <h2 className="text-5xl md:text-8xl font-display uppercase tracking-tighter leading-none">
@@ -76,7 +122,7 @@ export const Music: React.FC = () => {
               {t.music.cta} <ExternalLink size={14} />
             </a>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
