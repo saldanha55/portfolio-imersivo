@@ -24,7 +24,7 @@ export const Projects: React.FC = () => {
     {
       ...t.projects.items[0],
       tech: ["Vanilla JS", "HTML5", "CSS3", "Canvas API"],
-      link: "https://rsservicos.netlify.app",
+      link: "https://rsservicos.pages.dev",
       image: "/fundo.jpg",
     },
     {
